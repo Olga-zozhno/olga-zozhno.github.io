@@ -66,7 +66,7 @@
   .header h1 {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(32px, 6vw, 52px);
-    font-weight: 300;
+    font-weight: 500;
     line-height: 1.15;
     color: var(--text);
     margin-bottom: 16px;
@@ -81,7 +81,7 @@
     line-height: 1.7;
     max-width: 480px;
     margin: 0 auto;
-    font-weight: 300;
+    font-weight: 500;
   }
 
   /* PROGRESS */
@@ -132,7 +132,7 @@
   .question-text {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(20px, 3.5vw, 26px);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.4;
     margin-bottom: 28px;
     color: var(--text);
@@ -159,7 +159,7 @@
     font-size: 14px;
     color: var(--text);
     line-height: 1.5;
-    font-weight: 300;
+    font-weight: 500;
   }
 
   .option:hover {
@@ -222,7 +222,7 @@
     cursor: pointer;
     border: none;
     transition: all 0.25s ease;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .btn-back {
@@ -278,7 +278,7 @@
   .result-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(28px, 5vw, 42px);
-    font-weight: 300;
+    font-weight: 500;
     line-height: 1.2;
     margin-bottom: 10px;
   }
@@ -350,7 +350,7 @@
     font-size: 14px;
     line-height: 1.8;
     color: #4A3F30;
-    font-weight: 300;
+    font-weight: 500;
   }
 
   .result-section ul {
@@ -378,7 +378,7 @@
     font-size: 20px;
     line-height: 1.5;
     margin-bottom: 18px;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .cta-box .btn-cta {
@@ -435,7 +435,7 @@
   .intro-card h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 26px;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 16px;
   }
 
@@ -444,7 +444,7 @@
     line-height: 1.8;
     color: #1A1208;
     margin-bottom: 12px;
-    font-weight: 300;
+    font-weight: 500;
   }
 
   .dosha-pills {
@@ -547,13 +547,16 @@
   <div id="intro" class="intro-section">
     <div class="intro-card">
       <h2>Что такое доша?</h2>
-      <p>В аюрведе каждый человек рождается с уникальным сочетанием трёх энергий — дош. Они определяют твой характер, телосложение, пищеварение, сон и даже то, как ты реагируешь на стресс.</p>
+      <p>Согласно аюрведе каждый человек рождается с уникальным сочетанием трёх энергий — дош. Они определяют твой характер, телосложение, пищеварение, сон и даже то, как ты реагируешь на стресс.</p>
       <div class="dosha-pills">
         <span class="dosha-pill pill-v">Вата — воздух и эфир</span>
         <span class="dosha-pill pill-p">Питта — огонь и вода</span>
         <span class="dosha-pill pill-k">Капха — земля и вода</span>
       </div>
-      <p>Отвечай, опираясь на то, каким ты <strong>бываешь в целом по жизни</strong>, а не в последнее время. Нет правильных или неправильных ответов — только твоя природа.</p>
+      <p>Доши могут быть как чистыми, так и сочетанными. Знание своего типа даёт понимание, какое питание, образ жизни и тренировки будут благотворно влиять именно на тебя.</p>
+      <p style="font-size:14px; color:#4A3F30; background:#F5F0E8; border-radius:8px; padding:10px 14px; line-height:1.6;">
+        📌 Отвечай, опираясь на то, каким ты <strong>бываешь в основном по жизни</strong>, а не в последнее время. Выбирай ответ, который наиболее вероятен для тебя — скорее да, чем нет. Не ищи идеального совпадения.
+      </p>
       <p style="font-size:14px; font-weight:500; margin-top:8px;">Укажи свой пол — это влияет на рекомендации:</p>
       <div class="gender-select">
         <button class="gender-btn" id="g-female" onclick="selectGender('female')">
@@ -586,6 +589,9 @@
     <div class="question-card" id="question-card">
       <div class="question-category" id="q-cat-label"></div>
       <div class="question-text" id="q-text"></div>
+      <div id="q-hint" style="font-size:13px; color:#4A3F30; background:#F5F0E8; border-radius:8px; padding:10px 14px; margin-top:8px; line-height:1.6; display:none;">
+        💡 Выбирайте ответ, который наиболее вероятен для вас — скорее да, чем нет. Не ищите идеального совпадения.
+      </div>
       <div class="options" id="q-options"></div>
     </div>
 
@@ -621,7 +627,7 @@
 const questions = [
   // ТЕЛОСЛОЖЕНИЕ И ФИЗИКА
   { cat: "Тело", text: "Моё телосложение от природы:", opts: [
-    { text: "Худощавое, сложно набрать вес, торчат кости", v: 3, p: 0, k: 0 },
+    { text: "Худощавое, сложно набрать вес", v: 3, p: 0, k: 0 },
     { text: "Среднее, мышцы развиваются легко", v: 0, p: 3, k: 0 },
     { text: "Плотное, вес набирается быстро и легко", v: 0, p: 0, k: 3 },
   ]},
@@ -689,7 +695,7 @@ const questions = [
     { text: "Хорошо переношу холод, плохо — сырость и тяжёлый воздух", v: 0, p: 0, k: 3 },
   ]},
   { cat: "Тело", text: "Мои суставы и кости:", opts: [
-    { text: "Хрустят, бывает боль, суставы подвижные", v: 3, p: 0, k: 0 },
+    { text: "Хрустят, бывает боль, малоподвижные", v: 3, p: 0, k: 0 },
     { text: "Крепкие, бывают воспаления и жар в суставах", v: 0, p: 3, k: 0 },
     { text: "Большие, крепкие, редко беспокоят", v: 0, p: 0, k: 3 },
   ]},
@@ -857,6 +863,9 @@ function startQuiz() {
 function renderQuestion() {
   const q = questions[current];
   document.getElementById('q-counter').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+  
+  const hint = document.getElementById('q-hint');
+  if (hint) hint.style.display = current === 0 ? 'block' : 'none';
   document.getElementById('q-cat-label').textContent = q.cat;
   document.getElementById('q-text').textContent = q.text;
   document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
@@ -993,8 +1002,8 @@ function showResult() {
     <div class="result-section" style="text-align:center; padding: 32px 16px;">
       <div style="font-size:48px; margin-bottom:16px;">🌿</div>
       <h3 style="font-size:22px; margin-bottom:12px; color:#1A1208;">Тест завершён!</h3>
-      <p style="font-size:16px; line-height:1.7; color:#1A1208; margin-bottom:28px;">
-        Напишите мне в личку в Telegram — я пришлю ваш результат и расскажу, что он означает именно для вас.
+      <p style="font-size:16px; line-height:1.7; color:#1A1208; margin-bottom:16px;">
+        Сделайте скрин этого экрана и отправьте мне в Telegram — я расскажу, что ваш результат означает именно для вас и дам личные рекомендации.
       </p>
       <a href="https://t.me/olga_mojnoizojno" target="_blank" style="
         display: inline-block;
