@@ -840,7 +840,7 @@ let userGender = null;
 
 function selectGender(g) {
   userGender = g;
-  ['female','male','other'].forEach(id => {
+  ['female','male'].forEach(id => {
     document.getElementById('g-' + id).classList.toggle('selected', id === g);
   });
   const btn = document.getElementById('btn-start-main');
