@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Узнай свою дошу — Можно и ЗОЖ-но</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vata: #7B9E87;
+    --pitta: #C4714A;
+    --kapha: #6B7FA3;
+    --bg: #FAF7F2;
+    --text: #2C2416;
+    --accent: #B89B6A;
+    --light: #F0EBE0;
+    --card: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* DECORATIVE BG */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    right: -20%;
+    width: 70vw;
+    height: 70vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,155,106,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 48px 0 36px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .header .logo {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header p {
+    font-size: 15px;
+    color: #6B5F4E;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin: 28px 0 32px;
+    animation: fadeUp 0.6s ease both 0.3s;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .progress-bar {
+    height: 2px;
+    background: var(--light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--vata), var(--accent), var(--pitta));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 40px;
+    box-shadow: 0 4px 40px rgba(44,36,22,0.06);
+    animation: fadeUp 0.5s ease both;
+    border: 1px solid rgba(184,155,106,0.12);
+  }
+
+  .question-category {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3.5vw, 26px);
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1.5px solid var(--light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    text-align: left;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .option:hover {
+    border-color: var(--accent);
+    background: rgba(184,155,106,0.05);
+    transform: translateX(4px);
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(184,155,106,0.08);
+  }
+
+  .option-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid #D4C5A9;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option.selected .option-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .option.selected .option-dot::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  .option-label {
+    flex: 1;
+  }
+
+  /* NAVIGATION */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 13px 30px;
+    border-radius: 50px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+    font-weight: 400;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1.5px solid var(--light);
+    color: #9B8E7A;
+  }
+  .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-next {
+    background: var(--text);
+    color: var(--bg);
+    margin-left: auto;
+  }
+  .btn-next:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(184,155,106,0.3); }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* RESULT */
+  .result-card {
+    background: var(--card);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(44,36,22,0.08);
+    animation: fadeUp 0.7s ease both;
+    border: 1px solid rgba(184,155,106,0.12);
+  }
+
+  .result-header {
+    padding: 40px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-header::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+
+  .result-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .result-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  .result-body {
+    padding: 32px 40px 40px;
+  }
+
+  .score-bars {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .score-bar-item {
+    flex: 1;
+    text-align: center;
+  }
+
+  .score-bar-item .label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: #9B8E7A;
+  }
+
+  .score-bar-item .bar {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--light);
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .score-bar-item .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease 0.3s;
+  }
+
+  .score-bar-item .pct {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .result-section {
+    margin-bottom: 24px;
+  }
+
+  .result-section h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-section p, .result-section li {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #4A3F30;
+    font-weight: 300;
+  }
+
+  .result-section ul {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .result-section ul li::before {
+    content: '—';
+    margin-right: 8px;
+    color: var(--accent);
+  }
+
+  .cta-box {
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 28px 30px;
+    margin-top: 32px;
+    text-align: center;
+    border: 1px solid rgba(184,155,106,0.2);
+  }
+
+  .cta-box p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+
+  .cta-box .btn-cta {
+    background: var(--accent);
+    color: white;
+    padding: 15px 36px;
+    border-radius: 50px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .cta-box .btn-cta:hover {
+    background: var(--text);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44,36,22,0.2);
+  }
+
+  .restart-btn {
+    display: block;
+    margin: 20px auto 0;
+    background: transparent;
+    border: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9B8E7A;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* INTRO */
+  .intro-section {
+    animation: fadeUp 0.7s ease both 0.2s;
+  }
+
+  .intro-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 40px;
+    box-shadow: 0 4px 40px rgba(44,36,22,0.06);
+    border: 1px solid rgba(184,155,106,0.12);
+    margin-bottom: 20px;
+  }
+
+  .intro-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .intro-card p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #6B5F4E;
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+
+  .dosha-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .dosha-pill {
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .pill-v { background: rgba(123,158,135,0.15); color: var(--vata); }
+  .pill-p { background: rgba(196,113,74,0.15); color: var(--pitta); }
+  .pill-k { background: rgba(107,127,163,0.15); color: var(--kapha); }
+
+  .btn-start {
+    width: 100%;
+    padding: 16px;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 8px;
+  }
+
+  .btn-start:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,155,106,0.3); }
+
+  .gender-select {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .gender-btn {
+    flex: 1;
+    padding: 18px 12px;
+    border-radius: 14px;
+    border: 1.5px solid var(--light);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gender-btn .g-icon { font-size: 28px; }
+  .gender-btn:hover { border-color: var(--accent); background: rgba(184,155,106,0.05); }
+  .gender-btn.selected { border-color: var(--accent); background: rgba(184,155,106,0.1); }
+  .gender-btn.selected .g-label { color: var(--accent); font-weight: 500; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 560px) {
+    .question-card, .result-body, .result-header, .intro-card { padding: 24px 22px; }
+    .result-header { padding: 28px 22px 22px; }
+    .score-bars { flex-direction: column; gap: 12px; }
+    .score-bar-item { display: flex; align-items: center; gap: 10px; }
+    .score-bar-item .label { width: 50px; text-align: left; margin-bottom: 0; }
+    .score-bar-item .bar { flex: 1; margin-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">Можно и ЗОЖ-но</div>
+    <h1>Какова твоя<br><em>истинная природа?</em></h1>
+    <p>Пройди тест и узнай свою дошу по аюрведе — ключ к здоровью, энергии и гармонии</p>
+  </div>
+
+  <!-- INTRO -->
+  <div id="intro" class="intro-section">
+    <div class="intro-card">
+      <h2>Что такое доша?</h2>
+      <p>В аюрведе каждый человек рождается с уникальным сочетанием трёх энергий — дош. Они определяют твой характер, телосложение, пищеварение, сон и даже то, как ты реагируешь на стресс.</p>
+      <div class="dosha-pills">
+        <span class="dosha-pill pill-v">Вата — воздух и эфир</span>
+        <span class="dosha-pill pill-p">Питта — огонь и вода</span>
+        <span class="dosha-pill pill-k">Капха — земля и вода</span>
+      </div>
+      <p>Отвечай, опираясь на то, каким ты <strong>бываешь в целом по жизни</strong>, а не в последнее время. Нет правильных или неправильных ответов — только твоя природа.</p>
+      <p style="font-size:14px; font-weight:500; margin-top:8px;">Укажи свой пол — это влияет на рекомендации:</p>
+      <div class="gender-select">
+        <button class="gender-btn" id="g-female" onclick="selectGender('female')">
+          <span class="g-icon">♀</span>
+          <span class="g-label">Женщина</span>
+        </button>
+        <button class="gender-btn" id="g-male" onclick="selectGender('male')">
+          <span class="g-icon">♂</span>
+          <span class="g-label">Мужчина</span>
+        </button>
+
+      </div>
+      <p style="font-size:13px; color:#9B8E7A;">⏱ Займёт около 5–7 минут · 21 вопрос</p>
+      <button class="btn-start" id="btn-start-main" onclick="startQuiz()" style="opacity:0.4;pointer-events:none;">Начать тест →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="q-counter">Вопрос 1 из 21</span>
+        <span id="q-category"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-category" id="q-cat-label"></div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" id="btn-back" onclick="prevQuestion()">← Назад</button>
+      <button class="btn btn-next" id="btn-next" onclick="nextQuestion()" disabled>Далее →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result" class="hidden">
+    <div class="result-card">
+      <div class="result-header" id="result-header">
+        <div class="result-tag" id="result-tag"></div>
+        <div class="result-title" id="result-title"></div>
+        <div class="result-subtitle" id="result-subtitle"></div>
+      </div>
+      <div class="result-body">
+        <div class="score-bars" id="score-bars"></div>
+        <div id="result-content"></div>
+        <div class="cta-box">
+          <p id="cta-text">Хочешь глубже разобраться в своей природе и получить личный план питания и образа жизни?</p>
+          <a href="https://t.me/mozhno_i_zozhno" class="btn-cta" target="_blank">Записаться на консультацию</a>
+        </div>
+        <button class="restart-btn" onclick="restartQuiz()">Пройти тест заново</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  // ТЕЛОСЛОЖЕНИЕ И ФИЗИКА
+  { cat: "Тело", text: "Моё телосложение от природы:", opts: [
+    { text: "Худощавое, сложно набрать вес, торчат кости", v: 3, p: 0, k: 0 },
+    { text: "Среднее, мышцы развиваются легко", v: 0, p: 3, k: 0 },
+    { text: "Плотное, вес набирается быстро и легко", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Тело", text: "Моя кожа чаще всего:", opts: [
+    { text: "Сухая, шелушится, особенно зимой", v: 3, p: 0, k: 0 },
+    { text: "Жирная в Т-зоне, склонна к покраснениям и акне", v: 0, p: 3, k: 0 },
+    { text: "Мягкая, бледная, склонна к отёкам", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Тело", text: "Мои волосы от природы:", opts: [
+    { text: "Сухие, тонкие, вьющиеся, ломкие", v: 3, p: 0, k: 0 },
+    { text: "Прямые, склонные к жирности и ранней сединой", v: 0, p: 3, k: 0 },
+    { text: "Густые, тёмные, блестящие, немного жирные", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Тело", text: "Мой аппетит:", opts: [
+    { text: "Нерегулярный — то очень хочу есть, то забываю", v: 3, p: 0, k: 0 },
+    { text: "Сильный, стабильный — пропуск еды вызывает раздражение", v: 0, p: 3, k: 0 },
+    { text: "Умеренный, могу долго не есть без дискомфорта", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Тело", text: "Моё пищеварение:", opts: [
+    { text: "Нестабильное: газы, вздутие, запоры", v: 3, p: 0, k: 0 },
+    { text: "Быстрое, интенсивное, иногда изжога или диарея", v: 0, p: 3, k: 0 },
+    { text: "Медленное, но стабильное", v: 0, p: 0, k: 3 },
+  ]},
+  // СОН И ЭНЕРГИЯ
+  { cat: "Сон и энергия", text: "Мой сон:", opts: [
+    { text: "Лёгкий, чуткий, часто просыпаюсь среди ночи", v: 3, p: 0, k: 0 },
+    { text: "Крепкий, но сплю немного — 5–6 часов хватает", v: 0, p: 3, k: 0 },
+    { text: "Глубокий, долгий, тяжело просыпаться утром", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Сон и энергия", text: "Мой уровень энергии в течение дня:", opts: [
+    { text: "Скачет: бываю очень активной, потом резко устаю", v: 3, p: 0, k: 0 },
+    { text: "Стабильно высокий, могу долго работать интенсивно", v: 0, p: 3, k: 0 },
+    { text: "Ровный, но раскачиваюсь медленно, зато выносливая", v: 0, p: 0, k: 3 },
+  ]},
+  // ХАРАКТЕР И УМ
+  { cat: "Характер", text: "Мой ум работает так:", opts: [
+    { text: "Быстро, скачет с мысли на мысль, много идей", v: 3, p: 0, k: 0 },
+    { text: "Остро, целенаправленно, хорошо анализирует", v: 0, p: 3, k: 0 },
+    { text: "Методично, неспешно, но с хорошей долгосрочной памятью", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Характер", text: "В стрессе я:", opts: [
+    { text: "Тревожусь, паникую, прокручиваю мысли по кругу", v: 3, p: 0, k: 0 },
+    { text: "Злюсь, критикую, стараюсь всё контролировать", v: 0, p: 3, k: 0 },
+    { text: "Замыкаюсь, ухожу в себя, ем лишнее", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Характер", text: "Принимая решения, я:", opts: [
+    { text: "Сначала импульсивно, потом сомневаюсь и меняю решение", v: 3, p: 0, k: 0 },
+    { text: "Решаю быстро и уверенно, редко сомневаюсь", v: 0, p: 3, k: 0 },
+    { text: "Долго взвешиваю, зато принятое решение окончательное", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Характер", text: "Моя речь:", opts: [
+    { text: "Быстрая, много слов, перескакиваю с темы на тему", v: 3, p: 0, k: 0 },
+    { text: "Чёткая, уверенная, прямая, иногда резкая", v: 0, p: 3, k: 0 },
+    { text: "Медленная, немногословная, спокойная", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Характер", text: "В отношениях я:", opts: [
+    { text: "Привязываюсь быстро, но могу легко увлечься новым", v: 3, p: 0, k: 0 },
+    { text: "Требовательная, умею вдохновлять, но могу давить", v: 0, p: 3, k: 0 },
+    { text: "Верная, надёжная, иногда слишком привязываюсь", v: 0, p: 0, k: 3 },
+  ]},
+  // ТЕЛО-2
+  { cat: "Тело", text: "Моя реакция на холод и тепло:", opts: [
+    { text: "Не переношу холод, постоянно мёрзну", v: 3, p: 0, k: 0 },
+    { text: "Не переношу жару, быстро перегреваюсь", v: 0, p: 3, k: 0 },
+    { text: "Хорошо переношу холод, плохо — сырость и тяжёлый воздух", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Тело", text: "Мои суставы и кости:", opts: [
+    { text: "Хрустят, бывает боль, суставы подвижные", v: 3, p: 0, k: 0 },
+    { text: "Крепкие, бывают воспаления и жар в суставах", v: 0, p: 3, k: 0 },
+    { text: "Большие, крепкие, редко беспокоят", v: 0, p: 0, k: 3 },
+  ]},
+  // ПИТАНИЕ
+  { cat: "Питание", text: "Мои предпочтения в еде:", opts: [
+    { text: "Люблю тёплое, острое, жирное — холодное плохо усваиваю", v: 3, p: 0, k: 0 },
+    { text: "Люблю холодное, сладкое, горькое — острое вызывает дискомфорт", v: 0, p: 3, k: 0 },
+    { text: "Люблю острое и терпкое, плохо переношу тяжёлую сладкую еду", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Питание", text: "После плотного обеда я:", opts: [
+    { text: "Чувствую вздутие, иногда дискомфорт", v: 3, p: 0, k: 0 },
+    { text: "Чувствую бодрость, пищеварение быстрое", v: 0, p: 3, k: 0 },
+    { text: "Хочу поспать, чувствую тяжесть", v: 0, p: 0, k: 3 },
+  ]},
+  // ОБРАЗ ЖИЗНИ
+  { cat: "Образ жизни", text: "Моё отношение к рутине:", opts: [
+    { text: "Сложно придерживаться режима, люблю спонтанность", v: 3, p: 0, k: 0 },
+    { text: "Легко следую плану, раздражаюсь от беспорядка", v: 0, p: 3, k: 0 },
+    { text: "Люблю стабильность и предсказуемость", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Образ жизни", text: "В спорте мне ближе:", opts: [
+    { text: "Танцы, йога, растяжка — что-то лёгкое и разнообразное", v: 3, p: 0, k: 0 },
+    { text: "Бег, плавание, командный спорт — люблю результат", v: 0, p: 3, k: 0 },
+    { text: "Силовые, ходьба — что-то методичное и выносливое", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Образ жизни", text: "Деньги и финансы для меня:", opts: [
+    { text: "Трачу легко, сложно копить, живу сегодняшним днём", v: 3, p: 0, k: 0 },
+    { text: "Зарабатываю целенаправленно, могу рисковать ради цели", v: 0, p: 3, k: 0 },
+    { text: "Люблю накапливать, трачу осторожно, люблю стабильность", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Образ жизни", text: "Когда я заболеваю, чаще всего это:", opts: [
+    { text: "Нервная система, кожа, запоры, тревога, бессонница", v: 3, p: 0, k: 0 },
+    { text: "Воспаления, жар, кожные высыпания, гастрит, раздражение", v: 0, p: 3, k: 0 },
+    { text: "Простуды, отёки, лишний вес, вялость, депрессия", v: 0, p: 0, k: 3 },
+  ]},
+  { cat: "Природа", text: "Какая природа мне ближе всего?", opts: [
+    { text: "Ветреные горы, пустыня, открытые пространства", v: 3, p: 0, k: 0 },
+    { text: "Море, тропики, яркое солнце", v: 0, p: 3, k: 0 },
+    { text: "Леса, поля, прохладные озёра", v: 0, p: 0, k: 3 },
+  ]},
+];
+
+const results = {
+  VVV: {
+    tag: "Чистая Вата",
+    title: "Ты — воздух и движение",
+    subtitle: "Живая, творческая, непредсказуемая",
+    color: "#7B9E87",
+    bg: "rgba(123,158,135,0.08)",
+    traits: "Ты полна идей, быстро схватываешь новое, обожаешь перемены. Твоя сила — творчество и интуиция. Слабость — рассеянность и нестабильность.",
+    food: ["Тёплая, маслянистая, питательная пища", "Каши на топлёном масле, супы, тушёные овощи", "Избегай сырых салатов, холодных напитков, сухарей", "Специи: имбирь, куркума, кардамон, корица"],
+    life: ["Строгий режим дня — твой лучший друг", "Абьянга (самомассаж тёплым кунжутным маслом)", "Тёплые ванны вечером для успокоения нервов", "Избегай сквозняков и переохлаждения"],
+    practice: ["Мягкая йога, тай-чи, медленные прогулки", "Медитация на заземление минимум 10 минут в день", "Ложиться спать до 22:00 — критически важно для Ваты"],
+  },
+  PPP: {
+    tag: "Чистая Питта",
+    title: "Ты — огонь и трансформация",
+    subtitle: "Лидер, стратег, перфекционист",
+    color: "#C4714A",
+    bg: "rgba(196,113,74,0.08)",
+    traits: "Ты целеустремлённая, острая на ум, с сильной волей. Умеешь добиваться результата. Твоя слабость — склонность к перегреву, раздражению и критике.",
+    food: ["Охлаждающие, сладкие, горькие вкусы", "Кокосовое молоко, авокадо, огурцы, листовая зелень", "Избегай острого, кислого, алкоголя, жареного", "Специи: кориандр, фенхель, мята, куркума"],
+    life: ["Прогулки в прохладное время суток", "Охлаждающее масло (кокосовое) для кожи и головы", "Регулярный отдых — Питта сгорает без перерыва", "Избегай конкуренции ради конкуренции"],
+    practice: ["Плавание, велосипед, прогулки — не марафоны", "Практики на сострадание и принятие", "Медитация на охлаждение и расслабление"],
+  },
+  KKK: {
+    tag: "Чистая Капха",
+    title: "Ты — земля и стабильность",
+    subtitle: "Верная, выносливая, мудрая",
+    color: "#6B7FA3",
+    bg: "rgba(107,127,163,0.08)",
+    traits: "Ты надёжная, терпеливая, с мощной внутренней силой. Верный друг. Твоя слабость — склонность к застою, лишнему весу и избеганию перемен.",
+    food: ["Лёгкая, тёплая, острая и горькая пища", "Бобовые, овощи, специи, минимум масла", "Избегай молочного, сладкого, тяжёлой еды, избытка зерна", "Специи: чёрный перец, имбирь, горчица, гвоздика"],
+    life: ["Активный, разнообразный образ жизни — Капха нуждается в стимуле", "Сухой массаж жёсткой щёткой или варежкой", "Вставать рано — после 6 утра накапливается Капха", "Новые впечатления и социальная активность"],
+    practice: ["Динамичные тренировки, бег, танцы, кардио", "Практики на пробуждение и мотивацию", "Чёткий план дня с дедлайнами"],
+  },
+  VP: {
+    tag: "Вата-Питта",
+    title: "Ты — ветер, несущий пламя",
+    subtitle: "Быстрая, яркая, вдохновляющая",
+    color: "#9B8E7A",
+    bg: "rgba(155,142,122,0.08)",
+    traits: "Сочетаешь в себе скорость Ваты и целеустремлённость Питты. Ты вдохновляешь других своей энергией. Главные риски — нервное истощение и воспаления от перегрузки.",
+    food: ["Тёплое, умеренно острое, питательное", "Избегай сырого, холодного, пропусков еды", "Специи: кориандр, фенхель, имбирь в умеренных количествах", "Регулярное питание критически важно"],
+    life: ["Режим дня — балансирует обе доши", "Охлаждение Питты + питание Ваты", "Не перегружай нервную систему", "Топлёное масло в рацион — питает Вату, не воспаляет Питту"],
+    practice: ["Йога умеренной интенсивности", "Медитация и дыхательные практики (нади шодхана)", "Чередование активных и спокойных дней"],
+  },
+  VK: {
+    tag: "Вата-Капха",
+    title: "Ты — мягкий ветер над землёй",
+    subtitle: "Чуткая, глубокая, с неожиданными порывами",
+    color: "#7B9E87",
+    bg: "rgba(123,158,135,0.07)",
+    traits: "Редкое сочетание. Ты одновременно лёгкая и устойчивая. Твоя нестабильность компенсируется внутренней надёжностью. Риск — застой и тревога одновременно.",
+    food: ["Тёплое, острое, стимулирующее пищеварение", "Имбирный чай, специи, бобовые", "Избегай сырого, холодного, тяжёлого молочного", "Специи: имбирь, чёрный перец, куркума"],
+    life: ["Тепло и движение — основа баланса", "Регулярный режим для Ваты, активность для Капхи", "Избегай дневного сна", "Сухой массаж + тёплое масло"],
+    practice: ["Динамичная йога, танцы, ходьба", "Практики на уверенность и принятие перемен", "Прогрев тела (баня, горячая ванна) помогает обеим дошам"],
+  },
+  PK: {
+    tag: "Питта-Капха",
+    title: "Ты — огонь в земле",
+    subtitle: "Сильная, выносливая, надёжная лидер",
+    color: "#C4714A",
+    bg: "rgba(196,113,74,0.07)",
+    traits: "Мощная комбинация. Ты умеешь добиваться результата и при этом держать устойчивость. Риски — воспаления, лишний вес и склонность к доминированию.",
+    food: ["Лёгкое, охлаждающее, острое", "Горькие листовые овощи, бобовые, специи", "Избегай тяжёлого мяса, сладкого, жирного молочного, алкоголя", "Специи: кориандр, куркума, фенхель"],
+    life: ["Регулярная физическая активность обязательна", "Периоды детокса (разгрузочные дни)", "Следи за воспалительными процессами", "Учись делегировать — Капха копит, Питта контролирует"],
+    practice: ["Плавание, велосипед, силовые умеренные", "Медитация на принятие и сострадание", "Практики релаксации для Питты"],
+  },
+  VVP: {
+    tag: "Вата с Питтой",
+    title: "Ты — творческий стратег",
+    subtitle: "Идей много, сила их воплотить — тоже есть",
+    color: "#9B8E7A",
+    bg: "rgba(155,142,122,0.08)",
+    traits: "Вата даёт идеи, Питта — фокус для их реализации. Ты умеешь мечтать и действовать. Следи за нервной системой и не допускай перегрева.",
+    food: ["Питательное тёплое питание с умеренными специями", "Топлёное масло, каши, тушёные овощи", "Регулярный приём пищи в одно время", "Охлаждающие специи: кориандр, фенхель, кардамон"],
+    life: ["Структура дня снижает тревогу Ваты", "Умеренная нагрузка без перегрева", "Следи за качеством сна", "Ограничь кофе и острое"],
+    practice: ["Йога: утром активная, вечером восстановительная", "Медитация 10–15 минут утром", "Прогулки на свежем воздухе"],
+  },
+  VVK: {
+    tag: "Вата с Капхой",
+    title: "Ты — лёгкость на твёрдой почве",
+    subtitle: "Интуитивная, но с внутренним стержнем",
+    color: "#7B9E87",
+    bg: "rgba(123,158,135,0.07)",
+    traits: "Капха даёт тебе устойчивость, которой Вате так не хватает. Ты более надёжна, чем кажешься. Следи за застоем и тревогой — они могут усиливать друг друга.",
+    food: ["Тёплое, острое, лёгкое", "Имбирь, чёрный перец, горчица", "Избегай холодного, сырого, тяжёлого", "Больше коренеплодов, меньше сахара"],
+    life: ["Чёткий режим дня с ранним подъёмом", "Тепло тела — приоритет (баня, горячие ванны)", "Движение каждый день — Капха застаивается", "Новые впечатления поддерживают Вату в балансе"],
+    practice: ["Йога с элементами силы и разнообразия", "Танцы, прогулки, всё что в радость", "Медитация на заземление"],
+  },
+  PPK: {
+    tag: "Питта с Капхой",
+    title: "Ты — мощный и устойчивый огонь",
+    subtitle: "Лидер с фундаментом и выносливостью",
+    color: "#6B7FA3",
+    bg: "rgba(107,127,163,0.07)",
+    traits: "Самое мощное физически сочетание. Ты способна на многое и не сдаёшься. Следи за воспалениями и склонностью к избыточному контролю.",
+    food: ["Охлаждающее и лёгкое", "Горькие, вяжущие вкусы — зелень, бобовые", "Избегай жирного, жареного, алкоголя, избытка мяса", "Специи: кориандр, куркума, фенхель, мята"],
+    life: ["Регулярные детоксы и разгрузочные дни", "Активный отдых, смена обстановки", "Следи за воспалительными маркерами", "Учись отдыхать — не только действовать"],
+    practice: ["Плавание, йога, умеренные кардио", "Практики благодарности и принятия", "Ежедневная медитация на расслабление"],
+  },
+};
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let userGender = null;
+
+function selectGender(g) {
+  userGender = g;
+  ['female','male','other'].forEach(id => {
+    document.getElementById('g-' + id).classList.toggle('selected', id === g);
+  });
+  const btn = document.getElementById('btn-start-main');
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'auto';
+}
+
+function startQuiz() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('q-counter').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+  document.getElementById('q-cat-label').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress-fill').style.width = `${(current / questions.length) * 100}%`;
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+
+  const optEl = document.getElementById('q-options');
+  optEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="option-dot"></span><span class="option-label">${opt.text}</span>`;
+    btn.onclick = () => selectOption(i);
+    optEl.appendChild(btn);
+  });
+
+  document.getElementById('btn-next').disabled = answers[current] === null;
+  document.getElementById('btn-next').textContent = current === questions.length - 1 ? 'Узнать результат →' : 'Далее →';
+
+  // animate
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp 0.4s ease both';
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  document.querySelectorAll('.option').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (current > 0) { current--; renderQuestion(); }
+}
+
+function showResult() {
+  let v = 0, p = 0, k = 0;
+  answers.forEach((ans, i) => {
+    if (ans !== null) {
+      v += questions[i].opts[ans].v;
+      p += questions[i].opts[ans].p;
+      k += questions[i].opts[ans].k;
+    }
+  });
+
+  const total = v + p + k || 1;
+  const vp = Math.round(v / total * 100);
+  const pp = Math.round(p / total * 100);
+  const kp = 100 - vp - pp;
+
+  // Determine result key
+  const sorted = [['V', v], ['P', p], ['K', k]].sort((a, b) => b[1] - a[1]);
+  const top = sorted[0][0];
+  const second = sorted[1][0];
+  const diff12 = sorted[0][1] - sorted[1][1];
+  const diff23 = sorted[1][1] - sorted[2][1];
+
+  let key;
+  if (diff12 > 6 && diff23 > 4) {
+    // clear dominant
+    key = top === 'V' ? 'VVV' : top === 'P' ? 'PPP' : 'KKK';
+  } else if (diff12 <= 3 && diff23 <= 3) {
+    // all roughly equal — tri-dosha, use top
+    key = top === 'V' ? 'VVV' : top === 'P' ? 'PPP' : 'KKK';
+  } else {
+    // two dominant
+    const pair = [top, second].sort().join('');
+    const map = { VP: 'VP', VK: 'VK', PK: 'PK', PV: 'VP', KV: 'VK', KP: 'PK' };
+    // Use ratio to pick sub-type
+    if (diff12 < 4) {
+      key = map[top + second] || 'VP';
+    } else {
+      // closer to pure
+      const pairNames = { VP: 'VVP', VK: 'VVK', PK: 'PPK', PV: 'VVP', KV: 'VVK', KP: 'PPK' };
+      key = pairNames[top + second] || 'VVP';
+    }
+  }
+
+  const res = results[key] || results['VP'];
+
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('result').classList.remove('hidden');
+
+  const header = document.getElementById('result-header');
+  header.style.background = res.bg;
+  header.style.borderBottom = `1px solid ${res.color}22`;
+
+  document.getElementById('result-tag').textContent = res.tag;
+  document.getElementById('result-tag').style.color = res.color;
+  document.getElementById('result-title').textContent = res.title;
+  document.getElementById('result-subtitle').textContent = res.subtitle;
+
+  // Score bars
+  const bars = document.getElementById('score-bars');
+  bars.innerHTML = `
+    <div class="score-bar-item">
+      <div class="label">Вата</div>
+      <div class="bar"><div class="bar-fill" style="background:var(--vata); width:0%" data-w="${vp}%"></div></div>
+      <div class="pct" style="color:var(--vata)">${vp}%</div>
+    </div>
+    <div class="score-bar-item">
+      <div class="label">Питта</div>
+      <div class="bar"><div class="bar-fill" style="background:var(--pitta); width:0%" data-w="${pp}%"></div></div>
+      <div class="pct" style="color:var(--pitta)">${pp}%</div>
+    </div>
+    <div class="score-bar-item">
+      <div class="label">Капха</div>
+      <div class="bar"><div class="bar-fill" style="background:var(--kapha); width:0%" data-w="${kp}%"></div></div>
+      <div class="pct" style="color:var(--kapha)">${kp}%</div>
+    </div>
+  `;
+
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => {
+      el.style.width = el.dataset.w;
+    });
+  }, 100);
+
+  // Content
+  const content = document.getElementById('result-content');
+  content.innerHTML = `
+    <div class="result-section">
+      <h3>🌿 Твоя природа</h3>
+      <p>${res.traits}</p>
+    </div>
+    <div class="result-section">
+      <h3>🥗 Питание для тебя</h3>
+      <ul>${res.food.map(f => `<li>${f}</li>`).join('')}</ul>
+    </div>
+    <div class="result-section">
+      <h3>🌞 Образ жизни</h3>
+      <ul>${res.life.map(l => `<li>${l}</li>`).join('')}</ul>
+    </div>
+    <div class="result-section">
+      <h3>🧘 Практики</h3>
+      <ul>${res.practice.map(p => `<li>${p}</li>`).join('')}</ul>
+    </div>
+  `;
+
+  // Adapt CTA and traits by gender
+  const genderNote = {
+    female: 'Для женщин особенно важно учитывать цикличность — рекомендации меняются в зависимости от фазы цикла и возраста.',
+    male: 'Для мужчин аюрведа уделяет особое внимание поддержке силы, энергии и гормонального баланса.',
+    other: '',
+  };
+  const note = genderNote[userGender] || '';
+  if (note) {
+    const extra = document.createElement('div');
+    extra.className = 'result-section';
+    extra.innerHTML = `<h3>🌺 Важно именно для тебя</h3><p>${note}</p>`;
+    document.getElementById('result-content').appendChild(extra);
+  }
+
+  const ctaText = userGender === 'male'
+    ? 'Хочешь разобраться глубже? Получи личный разбор своей доши и план питания на индивидуальной консультации.'
+    : 'Хочешь разобраться глубже? Получи личный разбор своей доши и план питания на индивидуальной консультации.';
+  document.getElementById('cta-text').textContent = ctaText;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
